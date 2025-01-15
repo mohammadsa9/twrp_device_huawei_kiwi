@@ -1,1 +1,1 @@
-add_lunch_combo omni_kiwi-eng
+export ALLOW_MISSING_DEPENDENCIES=true

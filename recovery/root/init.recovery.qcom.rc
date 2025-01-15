@@ -1,15 +1,21 @@
-on init
-    chmod 0660 /dev/qseecom
-    chown system drmrpc /dev/qseecom
-    chmod 0664 /dev/ion
-    chown system system /dev/ion
+on fs
+    wait /dev/block/platform/soc.0/${ro.boot.bootdevice}
+    symlink /dev/block/platform/soc.0/${ro.boot.bootdevice} /dev/block/bootdevice
 
-service qseecomd /sbin/qseecomd
-    oneshot
-    disabled
+    setprop sys.usb.ffs.aio_compat 1
+    setprop persist.adb.nonblocking_ffs 0
+    setprop ro.adb.nonblocking_ffs 0
+
+on boot
+    # vm_bms
+    chown root system /sys/class/power_supply/bms/capacity
+    chown root system /sys/class/power_supply/bms/current_now
+    chown root system /sys/class/power_supply/bms/voltage_ocv
+    chmod 0660 /sys/class/power_supply/bms/capacity
+    chmod 0664 /sys/class/power_supply/bms/current_now
+    chmod 0664 /sys/class/power_supply/bms/voltage_ocv
+
+service vm_bms /system/vendor/bin/vm_bms
     user root
     group root
-    seclabel u:r:recovery:s0
-
-on property:ro.crypto.state=encrypted
-    start qseecomd
+    seclabel u:r:init:s0
