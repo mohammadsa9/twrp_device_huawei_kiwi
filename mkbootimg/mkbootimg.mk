@@ -7,20 +7,23 @@ $(INSTALLED_DTIMAGE_TARGET): $(INSTALLED_KERNEL_TARGET)
 endif
 
 # Adding device tree image to the arguments for the mkbootimg command
-BOARD_MKBOOTIMG_ARGS += --dtb $(INSTALLED_DTIMAGE_TARGET)
+BOARD_MKBOOTIMG_ARGS += --dt $(INSTALLED_DTIMAGE_TARGET)
+
+# Using legacy mkbootimg to maintain compatibility with device requirements
+MKBOOTIMG_OLD := $(call my-dir)/mkbootimg.py
 
 # Generating the boot image
-$(INSTALLED_BOOTIMAGE_TARGET): $(MKBOOTIMG) $(INTERNAL_BOOTIMAGE_FILES) $(INSTALLED_DTIMAGE_TARGET)
+$(INSTALLED_BOOTIMAGE_TARGET): $(MKBOOTIMG_OLD) $(INTERNAL_BOOTIMAGE_FILES) $(INSTALLED_DTIMAGE_TARGET)
 	$(call pretty,"Target boot image: $@")
-	$(hide) $(MKBOOTIMG) $(INTERNAL_BOOTIMAGE_ARGS) $(INTERNAL_MKBOOTIMG_VERSION_ARGS) $(BOARD_MKBOOTIMG_ARGS) --output $@
+	$(hide) $(MKBOOTIMG_OLD) $(INTERNAL_BOOTIMAGE_ARGS) $(INTERNAL_MKBOOTIMG_VERSION_ARGS) $(BOARD_MKBOOTIMG_ARGS) --output $@
 	$(hide) $(call assert-max-image-size,$@,$(BOARD_BOOTIMAGE_PARTITION_SIZE))
 	@echo -e ${CL_CYN}"Made boot image: $@"${CL_RST}
 
 # Generating the recovery image
-$(INSTALLED_RECOVERYIMAGE_TARGET): $(MKBOOTIMG) $(INSTALLED_DTIMAGE_TARGET) \
+$(INSTALLED_RECOVERYIMAGE_TARGET): $(MKBOOTIMG_OLD) $(INSTALLED_DTIMAGE_TARGET) \
 		$(recovery_ramdisk) \
 		$(recovery_kernel)
 	$(call pretty,"Target recovery image: $@")
-	$(hide) $(MKBOOTIMG) $(INTERNAL_RECOVERYIMAGE_ARGS) $(BOARD_MKBOOTIMG_ARGS) --output $@
+	$(hide) $(MKBOOTIMG_OLD) $(INTERNAL_RECOVERYIMAGE_ARGS) $(BOARD_MKBOOTIMG_ARGS) --output $@
 	$(hide) $(call assert-max-image-size,$@,$(BOARD_RECOVERYIMAGE_PARTITION_SIZE))
 	@echo -e ${CL_CYN}"Made recovery image: $@"${CL_RST}

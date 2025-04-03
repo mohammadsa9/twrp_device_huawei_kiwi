@@ -36,12 +36,12 @@ BOARD_USES_QCOM_HARDWARE := true
 BOARD_KERNEL_BASE        := 0x80000000
 BOARD_KERNEL_PAGESIZE    := 4096
 BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 earlyprintk
-BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x02000000 --tags_offset 0x01E00000 --header_version 2
+BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x02000000 --tags_offset 0x01E00000
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_DT_IMAGE_NAME := dt.img
 
 # Kernel - prebuilt or build from source
-BOARD_CUSTOM_BOOTIMG_MK :=  $(LOCAL_PATH)/mkbootimg.mk
+BOARD_CUSTOM_BOOTIMG_MK :=  $(LOCAL_PATH)/mkbootimg/mkbootimg.mk
 TARGET_FORCE_PREBUILT_KERNEL := true
 ifeq ($(TARGET_FORCE_PREBUILT_KERNEL),true)
 INSTALLED_DTIMAGE_TARGET := $(LOCAL_PATH)/prebuilt/$(BOARD_DT_IMAGE_NAME)
