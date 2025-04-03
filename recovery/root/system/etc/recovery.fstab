@@ -1,0 +1,13 @@
+# Android fstab file.
+# The filesystem that contains the filesystem checker binary (typically /system) cannot
+# specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
+
+#TODO: Add 'check' as fs_mgr_flags with data partition.
+# Currently we dont have e2fsck compiled. So fs check would failed.
+
+#<src>                                   <mnt_point>        <type>   <mnt_flags and options>                                      <fs_mgr_flags>
+/dev/block/bootdevice/by-name/log        /log               vfat     nosuid,nodev,uid=1000,gid=1007,fmask=0007,dmask=0007         wait,check
+/dev/block/bootdevice/by-name/config     /frp               emmc     defaults                                                     defaults
+/dev/block/bootdevice/by-name/pad        /persistent        emmc     defaults                                                     defaults
+/dev/block/bootdevice/by-name/persist    /persist           auto     nosuid,nodev,barrier=1                                       wait,check
+/dev/block/bootdevice/by-name/misc       /misc              emmc     defaults                                                     defaults
