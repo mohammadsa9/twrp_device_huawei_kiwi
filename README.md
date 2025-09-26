@@ -32,7 +32,7 @@ https://github.com/mohammadsa9/android_kernel_huawei_kiwi
    ```
    mkdir ~/android/twrp-11.0
    cd ~/android/twrp-11.0
-   repo init -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-11
+   repo init -u https://github.com/mohammadsa9/platform_manifest_twrp_aosp.git -b twrp-11
    ```
 
 2. **Add a local manifest for the device**:
